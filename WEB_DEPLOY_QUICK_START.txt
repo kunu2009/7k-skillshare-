@@ -1,0 +1,185 @@
+╔═════════════════════════════════════════════════════════════════╗
+║                                                                 ║
+║     🌐 SKILLSWAP - WEB DEPLOYMENT TO VERCEL 🌐                ║
+║                                                                 ║
+╚═════════════════════════════════════════════════════════════════╝
+
+📋 OVERVIEW
+═════════════════════════════════════════════════════════════════
+
+  Deploy your Flutter web app to Vercel in 5 minutes!
+
+  Free hosting with:
+  ✓ Custom domains
+  ✓ Automatic HTTPS
+  ✓ Global CDN
+  ✓ Auto-scaling
+  ✓ Analytics
+
+═════════════════════════════════════════════════════════════════
+
+🚀 QUICK START (5 STEPS)
+═════════════════════════════════════════════════════════════════
+
+STEP 1: Build Web Version
+────────────────────────
+  Run: .\BUILD_WEB.bat
+
+  Wait ~15 minutes for completion
+  Result: build/web/ folder created
+
+STEP 2: Create Vercel Account (free)
+────────────────────────
+  Go to: https://vercel.com/signup
+  Sign up with GitHub account
+  (Makes deployment even easier)
+
+STEP 3: Install Vercel CLI
+────────────────────────
+  Open PowerShell, run:
+    npm install -g vercel
+
+  Verify:
+    vercel --version
+
+STEP 4: Deploy
+────────────────────────
+  In project folder, run:
+    vercel --prod
+
+  Follow prompts:
+    - Link to Vercel project
+    - Confirm settings
+    - Deploy!
+
+STEP 5: Test Your Live App
+────────────────────────
+  Click the URL shown
+  Test all features:
+    ✓ Login
+    ✓ Sign up
+    ✓ Google sign-in
+    ✓ Navigation
+    ✓ Dark mode
+
+═════════════════════════════════════════════════════════════════
+
+⏱️ TIME BREAKDOWN
+═════════════════════════════════════════════════════════════════
+
+  ~15 min - Build web version
+  ~2 min  - Install Vercel CLI
+  ~2 min  - Deploy
+  ~30 sec - App goes live!
+
+  Total: ~20 minutes ⚡
+
+═════════════════════════════════════════════════════════════════
+
+📝 SIMPLE COMMAND SEQUENCE
+═════════════════════════════════════════════════════════════════
+
+PowerShell:
+
+  1. Build web:
+     .\BUILD_WEB.bat
+
+  2. Install Vercel CLI:
+     npm install -g vercel
+
+  3. Deploy:
+     vercel --prod
+
+  Done! Your app is LIVE 🎉
+
+═════════════════════════════════════════════════════════════════
+
+🎯 AFTER DEPLOYMENT
+═════════════════════════════════════════════════════════════════
+
+  Your app URL: https://skillswap-xxxxx.vercel.app
+
+  Features enabled:
+  ✓ Same Firebase backend as mobile app
+  ✓ Same users and data
+  ✓ Real-time sync
+  ✓ Global access
+  ✓ Always online
+
+═════════════════════════════════════════════════════════════════
+
+🔗 CUSTOM DOMAIN (Optional)
+═════════════════════════════════════════════════════════════════
+
+  1. Register domain (Namecheap, GoDaddy, etc.)
+  2. In Vercel Dashboard → Settings → Domains
+  3. Add your domain
+  4. Update DNS (instructions provided)
+  5. Wait 24 hours for verification
+
+═════════════════════════════════════════════════════════════════
+
+🔄 UPDATES & REDEPLOYS
+═════════════════════════════════════════════════════════════════
+
+  After code changes:
+
+  1. Push to GitHub:
+     git add .
+     git commit -m "Update: description"
+     git push
+
+  2. Auto-deploys if using GitHub integration
+
+  OR manually redeploy:
+     vercel --prod
+
+═════════════════════════════════════════════════════════════════
+
+📊 MONITOR YOUR APP
+═════════════════════════════════════════════════════════════════
+
+  Vercel Dashboard shows:
+  ✓ Build status
+  ✓ Deployment history
+  ✓ Analytics & usage
+  ✓ Performance metrics
+  ✓ Error logs
+
+═════════════════════════════════════════════════════════════════
+
+❓ TROUBLESHOOTING
+═════════════════════════════════════════════════════════════════
+
+Issue: Firebase not working
+→ Check vercel.json has correct config
+→ Verify Firebase security rules allow web domain
+
+Issue: Google Sign-In fails
+→ Add vercel domain to Google OAuth settings
+→ Format: https://your-app.vercel.app
+
+Issue: Assets not loading
+→ Flutter web build handles this automatically
+→ Should work out of the box
+
+═════════════════════════════════════════════════════════════════
+
+📚 MORE INFO
+═════════════════════════════════════════════════════════════════
+
+  Read: WEB_DEPLOYMENT_GUIDE.md
+  For detailed step-by-step instructions
+
+═════════════════════════════════════════════════════════════════
+
+🎉 START NOW! 🎉
+═════════════════════════════════════════════════════════════════
+
+Run: .\BUILD_WEB.bat
+
+Then: vercel --prod
+
+Your app will be LIVE in 20 minutes! 🌐✨
+
+═════════════════════════════════════════════════════════════════
