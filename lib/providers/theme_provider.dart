@@ -8,7 +8,9 @@ class ThemeProvider extends ChangeNotifier {
     return _instance;
   }
 
-  ThemeProvider._internal();
+  ThemeProvider._internal() {
+    _loadTheme();
+  }
 
   ThemeMode _themeMode = ThemeMode.system;
   final _storage = GetStorage();
@@ -16,10 +18,6 @@ class ThemeProvider extends ChangeNotifier {
 
   ThemeMode get themeMode => _themeMode;
   bool get isDarkMode => _themeMode == ThemeMode.dark;
-
-  ThemeProvider() {
-    _loadTheme();
-  }
 
   void _loadTheme() {
     final isDark = _storage.read(_themeKey) ?? false;

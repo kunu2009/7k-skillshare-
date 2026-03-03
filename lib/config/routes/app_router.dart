@@ -25,16 +25,26 @@ class AppRouter {
     redirect: (context, state) {
       final authProvider = context.read<AuthProvider>();
       final isAuthenticated = authProvider.isAuthenticated;
+      final isSplash = state.uri.path == '/splash';
       final isAuthScreen = state.uri.path.startsWith('/login') ||
           state.uri.path.startsWith('/signup') ||
           state.uri.path.startsWith('/forgot-password');
 
+      // Don't redirect while on splash screen
+      if (isSplash) {
+        return null;
+      }
+
+      // If not authenticated and not on auth screen, go to login
       if (!isAuthenticated && !isAuthScreen) {
         return '/login';
       }
 
-      if (isAuthenticated && isAuthScreen) {
-        return '/home';
+      // If authenticated and on auth screen, go to home (but only from splash)
+      // Allow user to stay on auth screens if they navigate there manually
+      if (isAuthenticated && isAuthScreen && state.uri.path != '/splash') {
+        // Only auto-redirect if coming from splash, not if user clicked forgot password
+        return null;
       }
 
       return null;

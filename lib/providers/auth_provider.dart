@@ -19,8 +19,14 @@ class AuthProvider extends ChangeNotifier {
   }
 
   void _initializeAuth() {
+    // Listen to Firebase auth state changes
+    // Don't navigate here - let the router handle navigation via redirect logic
     AuthService.authStateChanges.listen((user) {
-      _currentUser = user;
+      if (user != null) {
+        _currentUser = user;
+      } else {
+        _currentUser = null;
+      }
       notifyListeners();
     });
   }

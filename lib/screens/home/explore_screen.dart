@@ -108,7 +108,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 final users = snapshot.data!.docs
                     .map((doc) =>
                         User.fromMap(doc.data() as Map<String, dynamic>))
-                    .where((user) => user.id != currentUser?.uid)
+                    .where((user) => user.uid != currentUser?.uid)
                     .toList();
 
                 return ListView.builder(
