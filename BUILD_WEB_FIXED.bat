@@ -1,57 +1,49 @@
 @echo off
-setlocal enabledelayedexpansion
+REM ============================================================
+REM BUILD WEB - FIX DEPENDENCIES & BUILD
+REM ============================================================
 
 echo.
 echo ============================================================
-echo SKILLSWAP - BUILD WEB (FIREBASE COMPATIBILITY FIX)
+echo Cleaning old builds...
 echo ============================================================
+call flutter clean
+call flutter pub cache clean --force
+
 echo.
-
-echo Note: Web version has limited features due to Firebase web SDK
-echo compatibility. APK version has full features.
-echo.
-
-echo [Step 1] Cleaning web build...
-rmdir /s /q build\web 2>nul
-call flutter clean >nul 2>&1
-
-echo [Step 2] Getting dependencies...
+echo ============================================================
+echo Getting updated dependencies...
+echo ============================================================
 call flutter pub get
 
 echo.
-echo [Step 3] Building web version...
-echo Using workaround for Firebase compatibility...
-echo This will take 10-15 minutes. Please wait...
-echo.
+echo ============================================================
+echo Building web version (this takes 10-15 minutes)...
+echo Please wait...
+echo ============================================================
+call flutter build web --release
 
-REM Try building with web release
-call flutter build web --release --web-renderer=canvaskit
-
-echo.
-if exist "build\web\index.html" (
+if %ERRORLEVEL% EQU 0 (
     echo.
     echo ============================================================
-    echo ✓ WEB BUILD SUCCESS!
+    echo SUCCESS!
     echo ============================================================
     echo.
-    echo Web files location: build\web
+    echo Web build complete! Files are in: build/web
     echo.
-    echo To deploy to Vercel:
-    echo 1. Install Vercel: npm install -g vercel
-    echo 2. Run: vercel --prod (in build\web folder)
-    echo 3. Or use: .\DEPLOY_VERCEL.bat
+    echo Next steps:
+    echo 1. Run: git add .
+    echo 2. Run: git commit -m "Fix Firebase and build web"
+    echo 3. Run: git push origin main
+    echo 4. Run: vercel --prod
     echo.
 ) else (
     echo.
     echo ============================================================
-    echo ⚠ WEB BUILD INCOMPLETE
+    echo BUILD FAILED
     echo ============================================================
     echo.
-    echo Firebase web SDK has compatibility issues with Flutter 3.32.5
-    echo APK version is fully functional and recommended!
-    echo.
-    echo Use APK version instead:
-    echo   .\BUILD_APK_FINAL.bat
+    echo Error: Web build failed. Check the errors above.
     echo.
 )
 

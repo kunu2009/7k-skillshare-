@@ -1,0 +1,14 @@
+{
+  "name": "skillswap",
+  "version": "1.0.0",
+  "description": "A peer-to-peer skill exchange platform where people trade knowledge instead of money",
+  "scripts": {
+    "build": "flutter build web --release",
+    "start": "flutter pub get && flutter build web --release"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "engines": {
+    "node": "18.x || 20.x"
+  }
+}

@@ -89,3 +89,4 @@ firebase-debug.log*
 
 # Generated code
 lib/generated/
+.vercel
