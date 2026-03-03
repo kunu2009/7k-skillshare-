@@ -166,7 +166,7 @@ class AppTheme {
           borderRadius: BorderRadius.circular(AppRadius.lg),
         ),
       ),
-      tabBarTheme: const TabBarTheme(
+      tabBarTheme: const TabBarThemeData(
         labelColor: AppColors.primaryColor,
         unselectedLabelColor: AppColors.textSecondary,
         indicatorSize: TabBarIndicatorSize.label,

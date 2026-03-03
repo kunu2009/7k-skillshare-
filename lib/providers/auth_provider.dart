@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fb;
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:skillswap/services/auth_service.dart';
-import 'package:skillswap/models/models.dart';
 
 class AuthProvider extends ChangeNotifier {
-  User? _currentUser;
+  fb.User? _currentUser;
   bool _isLoading = false;
   String? _error;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  User? get currentUser => _currentUser;
+  fb.User? get currentUser => _currentUser;
   bool get isLoading => _isLoading;
   String? get error => _error;
   bool get isAuthenticated => _currentUser != null;
@@ -33,12 +35,12 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final user = await AuthService.signUpWithEmail(
+      await AuthService.signUpWithEmail(
         email: email,
         password: password,
         displayName: displayName,
       );
-      _currentUser = user;
+      _currentUser = AuthService.currentUser;
       _isLoading = false;
       notifyListeners();
       return true;
@@ -59,11 +61,11 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final user = await AuthService.signInWithEmail(
+      await AuthService.signInWithEmail(
         email: email,
         password: password,
       );
-      _currentUser = user;
+      _currentUser = AuthService.currentUser;
       _isLoading = false;
       notifyListeners();
       return true;
@@ -83,6 +85,7 @@ class AuthProvider extends ChangeNotifier {
       await AuthService.signOut();
       _currentUser = null;
       _isLoading = false;
+      _error = null;
       notifyListeners();
     } catch (e) {
       _error = e.toString();
@@ -91,7 +94,7 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<bool> resetPassword(String email) async {
+  Future<void> resetPassword(String email) async {
     _isLoading = true;
     _error = null;
     notifyListeners();
@@ -100,6 +103,41 @@ class AuthProvider extends ChangeNotifier {
       await AuthService.resetPassword(email);
       _isLoading = false;
       notifyListeners();
+    } catch (e) {
+      _error = e.toString();
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<bool> signInWithGoogle() async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+
+    try {
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) {
+        _error = 'Sign in cancelled';
+        _isLoading = false;
+        notifyListeners();
+        return false;
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+      final credential = fb.GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      final userCredential =
+          await fb.FirebaseAuth.instance.signInWithCredential(credential);
+
+      _currentUser = userCredential.user;
+      _isLoading = false;
+      _error = null;
+      notifyListeners();
       return true;
     } catch (e) {
       _error = e.toString();
@@ -107,10 +145,5 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
       return false;
     }
-  }
-
-  void clearError() {
-    _error = null;
-    notifyListeners();
   }
 }

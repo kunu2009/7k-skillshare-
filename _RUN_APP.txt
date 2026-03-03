@@ -1,0 +1,25 @@
+# 🚀 COPY & PASTE TO RUN YOUR APP
+
+## This is all you need:
+
+```powershell
+flutter pub get
+flutter run -d chrome
+```
+
+## That's it!
+
+Wait 5-6 minutes and your app opens in Chrome.
+
+Sign up to test Firebase.
+
+Check Firebase Console to see your data.
+
+Done! 🎉
+
+---
+
+**GitHub**: https://github.com/kunu2009/7k-skillshare-
+**Firebase**: careerpilot-l4kg9
+**Cost**: $0
+**Status**: ✅ Ready

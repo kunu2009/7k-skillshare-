@@ -1,16 +1,16 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
-import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb, TargetPlatform;
 
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
-    if (Platform.isAndroid) {
+    if (kIsWeb) {
+      return web;
+    }
+    if (defaultTargetPlatform == TargetPlatform.android) {
       return android;
     }
-    if (Platform.isIOS) {
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
       return ios;
-    }
-    if (Platform.isWeb) {
-      return web;
     }
     throw UnsupportedError(
       'DefaultFirebaseOptions are not supported for this platform.',
@@ -18,31 +18,31 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'YOUR_ANDROID_API_KEY',
-    appId: '1:YOUR_APP_ID:android:YOUR_ANDROID_APP_ID',
-    messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
-    projectId: 'skillswap-firebase-project',
-    databaseURL: 'https://skillswap-firebase-project.firebaseio.com',
-    storageBucket: 'skillswap-firebase-project.appspot.com',
+    apiKey: 'AIzaSyAc7gnoeslIWlDNU--MmRayT7HacTTbHTQ',
+    appId: '1:507832408176:android:4cbe6cab1891dc04ed7cb5',
+    messagingSenderId: '507832408176',
+    projectId: 'careerpilot-l4kg9',
+    databaseURL: 'https://careerpilot-l4kg9-default-rtdb.firebaseio.com',
+    storageBucket: 'careerpilot-l4kg9.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'YOUR_IOS_API_KEY',
     appId: '1:YOUR_APP_ID:ios:YOUR_IOS_APP_ID',
-    messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
-    projectId: 'skillswap-firebase-project',
-    databaseURL: 'https://skillswap-firebase-project.firebaseio.com',
-    storageBucket: 'skillswap-firebase-project.appspot.com',
+    messagingSenderId: '507832408176',
+    projectId: 'careerpilot-l4kg9',
+    databaseURL: 'https://careerpilot-l4kg9-default-rtdb.firebaseio.com',
+    storageBucket: 'careerpilot-l4kg9.firebasestorage.app',
     iosBundleId: 'com.skillswap.app',
   );
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'YOUR_WEB_API_KEY',
-    appId: '1:YOUR_APP_ID:web:YOUR_WEB_APP_ID',
-    messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
-    projectId: 'skillswap-firebase-project',
-    databaseURL: 'https://skillswap-firebase-project.firebaseio.com',
-    storageBucket: 'skillswap-firebase-project.appspot.com',
-    authDomain: 'skillswap-firebase-project.firebaseapp.com',
+    apiKey: 'AIzaSyDFKhV0Gc8xKiE0eEWp7EBGw8advILcKWs',
+    appId: '1:507832408176:web:75fc52d68240a883ed7cb5',
+    messagingSenderId: '507832408176',
+    projectId: 'careerpilot-l4kg9',
+    databaseURL: 'https://careerpilot-l4kg9-default-rtdb.firebaseio.com',
+    storageBucket: 'careerpilot-l4kg9.firebasestorage.app',
+    authDomain: 'careerpilot-l4kg9.firebaseapp.com',
   );
 }

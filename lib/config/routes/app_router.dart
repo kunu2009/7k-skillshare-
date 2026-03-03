@@ -16,6 +16,7 @@ import 'package:skillswap/screens/connections/connection_requests_screen.dart';
 import 'package:skillswap/screens/chat/chat_list_screen.dart';
 import 'package:skillswap/screens/chat/chat_screen.dart';
 import 'package:skillswap/screens/call/call_screen.dart';
+import 'package:skillswap/screens/settings/settings_screen.dart';
 import 'package:skillswap/screens/splash_screen.dart';
 
 class AppRouter {
@@ -99,6 +100,10 @@ class AppRouter {
               final connectionId = state.pathParameters['connectionId']!;
               return CallScreen(connectionId: connectionId);
             },
+          ),
+          GoRoute(
+            path: 'settings',
+            builder: (context, state) => const SettingsScreen(),
           ),
         ],
       ),

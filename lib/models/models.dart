@@ -48,11 +48,18 @@ class User {
       communicationPreferences: Map<String, bool>.from(map['communicationPreferences'] ?? {'chat': true, 'audio': true, 'video': true}),
       rating: (map['rating'] ?? 0.0).toDouble(),
       sessionsCompleted: map['sessionsCompleted'] ?? 0,
-      createdAt: map['createdAt'] is Timestamp ? map['createdAt'].toDate() : DateTime.parse(map['createdAt']),
-      lastSeen: map['lastSeen'] is Timestamp ? map['lastSeen'].toDate() : DateTime.parse(map['lastSeen']),
+      createdAt: _parseDate(map['createdAt']),
+      lastSeen: _parseDate(map['lastSeen']),
       isOnline: map['isOnline'] ?? false,
       status: map['status'] ?? 'offline',
     );
+  }
+
+  static DateTime _parseDate(dynamic date) {
+    if (date == null) return DateTime.now();
+    if (date is Timestamp) return date.toDate();
+    if (date is String) return DateTime.parse(date);
+    return DateTime.now();
   }
 
   Map<String, dynamic> toMap() {
@@ -68,8 +75,8 @@ class User {
       'communicationPreferences': communicationPreferences,
       'rating': rating,
       'sessionsCompleted': sessionsCompleted,
-      'createdAt': Timestamp.fromDate(createdAt),
-      'lastSeen': Timestamp.fromDate(lastSeen),
+      'createdAt': createdAt.toIso8601String(),
+      'lastSeen': lastSeen.toIso8601String(),
       'isOnline': isOnline,
       'status': status,
     };
@@ -140,10 +147,17 @@ class Connection {
       userId2: map['userId2'] ?? '',
       status: map['status'] ?? 'pending',
       permissions: Map<String, bool>.from(map['permissions'] ?? {'chat': true, 'audio': true, 'video': true}),
-      createdAt: map['createdAt'] is Timestamp ? map['createdAt'].toDate() : DateTime.parse(map['createdAt']),
-      acceptedAt: map['acceptedAt'] != null ? (map['acceptedAt'] is Timestamp ? map['acceptedAt'].toDate() : DateTime.parse(map['acceptedAt'])) : null,
+      createdAt: _parseDate(map['createdAt']),
+      acceptedAt: map['acceptedAt'] != null ? _parseDate(map['acceptedAt']) : null,
       initiatedBy: map['initiatedBy'] ?? '',
     );
+  }
+
+  static DateTime _parseDate(dynamic date) {
+    if (date == null) return DateTime.now();
+    if (date is Timestamp) return date.toDate();
+    if (date is String) return DateTime.parse(date);
+    return DateTime.now();
   }
 
   Map<String, dynamic> toMap() {
@@ -153,8 +167,8 @@ class Connection {
       'userId2': userId2,
       'status': status,
       'permissions': permissions,
-      'createdAt': Timestamp.fromDate(createdAt),
-      'acceptedAt': acceptedAt != null ? Timestamp.fromDate(acceptedAt!) : null,
+      'createdAt': createdAt.toIso8601String(),
+      'acceptedAt': acceptedAt?.toIso8601String(),
       'initiatedBy': initiatedBy,
     };
   }
@@ -190,7 +204,7 @@ class ChatMessage {
       connectionId: map['connectionId'] ?? '',
       content: map['content'] ?? '',
       messageType: map['messageType'] ?? 'text',
-      timestamp: map['timestamp'] is Timestamp ? map['timestamp'].toDate() : DateTime.parse(map['timestamp']),
+      timestamp: User._parseDate(map['timestamp']),
       isRead: map['isRead'] ?? false,
       fileUrl: map['fileUrl'],
       fileName: map['fileName'],
@@ -204,7 +218,7 @@ class ChatMessage {
       'connectionId': connectionId,
       'content': content,
       'messageType': messageType,
-      'timestamp': Timestamp.fromDate(timestamp),
+      'timestamp': timestamp.toIso8601String(),
       'isRead': isRead,
       'fileUrl': fileUrl,
       'fileName': fileName,
@@ -248,12 +262,12 @@ class SkillSession {
       initiatorId: map['initiatorId'] ?? '',
       receiverId: map['receiverId'] ?? '',
       status: map['status'] ?? 'pending',
-      scheduledTime: map['scheduledTime'] is Timestamp ? map['scheduledTime'].toDate() : DateTime.parse(map['scheduledTime']),
+      scheduledTime: User._parseDate(map['scheduledTime']),
       durationMinutes: map['durationMinutes'] ?? 30,
       skillBeingTaught: map['skillBeingTaught'] ?? '',
       skillBeingLearned: map['skillBeingLearned'] ?? '',
-      startTime: map['startTime'] != null ? (map['startTime'] is Timestamp ? map['startTime'].toDate() : DateTime.parse(map['startTime'])) : null,
-      endTime: map['endTime'] != null ? (map['endTime'] is Timestamp ? map['endTime'].toDate() : DateTime.parse(map['endTime'])) : null,
+      startTime: map['startTime'] != null ? User._parseDate(map['startTime']) : null,
+      endTime: map['endTime'] != null ? User._parseDate(map['endTime']) : null,
       recordingUrl: map['recordingUrl'],
     );
   }
@@ -265,12 +279,12 @@ class SkillSession {
       'initiatorId': initiatorId,
       'receiverId': receiverId,
       'status': status,
-      'scheduledTime': Timestamp.fromDate(scheduledTime),
+      'scheduledTime': scheduledTime.toIso8601String(),
       'durationMinutes': durationMinutes,
       'skillBeingTaught': skillBeingTaught,
       'skillBeingLearned': skillBeingLearned,
-      'startTime': startTime != null ? Timestamp.fromDate(startTime!) : null,
-      'endTime': endTime != null ? Timestamp.fromDate(endTime!) : null,
+      'startTime': startTime?.toIso8601String(),
+      'endTime': endTime?.toIso8601String(),
       'recordingUrl': recordingUrl,
     };
   }
@@ -303,7 +317,7 @@ class Review {
       revieweeId: map['revieweeId'] ?? '',
       rating: (map['rating'] ?? 0.0).toDouble(),
       feedback: map['feedback'] ?? '',
-      createdAt: map['createdAt'] is Timestamp ? map['createdAt'].toDate() : DateTime.parse(map['createdAt']),
+      createdAt: User._parseDate(map['createdAt']),
     );
   }
 
@@ -315,7 +329,7 @@ class Review {
       'revieweeId': revieweeId,
       'rating': rating,
       'feedback': feedback,
-      'createdAt': Timestamp.fromDate(createdAt),
+      'createdAt': createdAt.toIso8601String(),
     };
   }
 }

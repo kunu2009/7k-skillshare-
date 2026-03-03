@@ -91,17 +91,25 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-                InkWell(
-                  onTap: () => context.push('/home/profile/${authProvider.currentUser?.uid}'),
-                  child: CircleAvatar(
-                    radius: 24,
-                    backgroundImage: authProvider.currentUser?.photoUrl != null
-                        ? NetworkImage(authProvider.currentUser!.photoUrl!)
-                        : null,
-                    child: authProvider.currentUser?.photoUrl == null
-                        ? Icon(Icons.person)
-                        : null,
-                  ),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () => context.push('/home/settings'),
+                      icon: Icon(Icons.settings),
+                    ),
+                    InkWell(
+                      onTap: () => context.push('/home/profile/${authProvider.currentUser?.uid}'),
+                      child: CircleAvatar(
+                        radius: 24,
+                        backgroundImage: authProvider.currentUser?.photoURL != null
+                            ? NetworkImage(authProvider.currentUser!.photoURL!)
+                            : null,
+                        child: authProvider.currentUser?.photoURL == null
+                            ? Icon(Icons.person)
+                            : null,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -308,10 +316,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   CircleAvatar(
                     radius: 50,
-                    backgroundImage: authProvider.currentUser?.photoUrl != null
-                        ? NetworkImage(authProvider.currentUser!.photoUrl!)
+                    backgroundImage: authProvider.currentUser?.photoURL != null
+                        ? NetworkImage(authProvider.currentUser!.photoURL!)
                         : null,
-                    child: authProvider.currentUser?.photoUrl == null
+                    child: authProvider.currentUser?.photoURL == null
                         ? Icon(Icons.person, size: 50)
                         : null,
                   ),

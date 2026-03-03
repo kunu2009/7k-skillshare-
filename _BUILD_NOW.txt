@@ -1,0 +1,40 @@
+# ⚡ QUICK START - BUILD APK NOW
+
+## 🚀 ONE COMMAND
+
+Double-click:
+```
+build_apk.bat
+```
+
+**Wait 5-7 minutes.**
+
+## 📦 Your APK Will Be Here:
+
+```
+build\app\outputs\flutter-apk\app-release.apk
+```
+
+**Copy this file to your phone and install it!**
+
+---
+
+## 📲 On Your Phone:
+
+1. Open the APK file
+2. Allow "Install from unknown sources"
+3. Tap Install
+4. Open SkillSwap app
+5. Sign up and test!
+
+---
+
+## ✅ That's It!
+
+Your app is production-ready and installable.
+
+**APK Size**: ~25-40 MB
+**Build Time**: 5-7 minutes
+**Status**: ✅ Ready to build
+
+**GO!** 🚀

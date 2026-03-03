@@ -6,7 +6,7 @@ class AppConstants {
   static const String appDescription = 'Learn Anything. Teach Everything.';
 
   // Agora Configuration
-  static const String agoraAppId = 'YOUR_AGORA_APP_ID';
+  static const String agoraAppId = '07c7fbc0303945918f98c4bec4d06373';
 
   // Timeouts
   static const Duration connectionTimeout = Duration(seconds: 30);

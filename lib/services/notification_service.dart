@@ -31,7 +31,6 @@ class NotificationService {
       alert: true,
       announcement: false,
       badge: true,
-      carPlaySecondary: false,
       criticalAlert: false,
       provisional: false,
       sound: true,

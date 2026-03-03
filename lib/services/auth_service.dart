@@ -1,26 +1,17 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:skillswap/models/models.dart';
 
 class AuthService {
-  static final FirebaseAuth _auth = FirebaseAuth.instance;
-  static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  static final _auth = fb.FirebaseAuth.instance;
+  static final _firestore = FirebaseFirestore.instance;
 
-  // Stream of auth changes
-  static Stream<User?> get authStateChanges {
-    return _auth.authStateChanges().asyncMap((firebaseUser) async {
-      if (firebaseUser == null) return null;
-
-      final userDoc = await _firestore.collection('users').doc(firebaseUser.uid).get();
-      if (userDoc.exists) {
-        return User.fromMap(userDoc.data() as Map<String, dynamic>);
-      }
-      return null;
-    });
+  // Get auth state changes
+  static Stream<fb.User?> get authStateChanges {
+    return _auth.authStateChanges();
   }
 
   // Sign up with email and password
-  static Future<User?> signUpWithEmail({
+  static Future<bool> signUpWithEmail({
     required String email,
     required String password,
     required String displayName,
@@ -33,24 +24,33 @@ class AuthService {
 
       await userCredential.user?.updateDisplayName(displayName);
 
-      final newUser = User(
-        uid: userCredential.user!.uid,
-        displayName: displayName,
-        email: email,
-        createdAt: DateTime.now(),
-        lastSeen: DateTime.now(),
-      );
+      // Create user document in Firestore
+      await _firestore.collection('users').doc(userCredential.user!.uid).set({
+        'uid': userCredential.user!.uid,
+        'displayName': displayName,
+        'email': email,
+        'photoUrl': null,
+        'bio': null,
+        'teachSkills': [],
+        'learnSkills': [],
+        'languagesSpoken': [],
+        'communicationPreferences': {'chat': true, 'audio': true, 'video': true},
+        'rating': 0.0,
+        'sessionsCompleted': 0,
+        'createdAt': FieldValue.serverTimestamp(),
+        'lastSeen': FieldValue.serverTimestamp(),
+        'isOnline': true,
+        'status': 'online',
+      });
 
-      await _firestore.collection('users').doc(newUser.uid).set(newUser.toMap());
-
-      return newUser;
-    } on FirebaseAuthException catch (e) {
+      return true;
+    } on fb.FirebaseAuthException catch (e) {
       throw _handleAuthException(e);
     }
   }
 
   // Sign in with email and password
-  static Future<User?> signInWithEmail({
+  static Future<bool> signInWithEmail({
     required String email,
     required String password,
   }) async {
@@ -60,21 +60,15 @@ class AuthService {
         password: password,
       );
 
-      final userDoc = await _firestore.collection('users').doc(userCredential.user!.uid).get();
-      if (userDoc.exists) {
-        final user = User.fromMap(userDoc.data() as Map<String, dynamic>);
+      // Update last seen
+      await _firestore.collection('users').doc(userCredential.user!.uid).update({
+        'lastSeen': FieldValue.serverTimestamp(),
+        'isOnline': true,
+        'status': 'online',
+      });
 
-        // Update last seen
-        await _firestore.collection('users').doc(user.uid).update({
-          'lastSeen': Timestamp.now(),
-          'isOnline': true,
-          'status': 'online',
-        });
-
-        return user;
-      }
-      return null;
-    } on FirebaseAuthException catch (e) {
+      return true;
+    } on fb.FirebaseAuthException catch (e) {
       throw _handleAuthException(e);
     }
   }
@@ -88,7 +82,7 @@ class AuthService {
         await _firestore.collection('users').doc(currentUser.uid).update({
           'isOnline': false,
           'status': 'offline',
-          'lastSeen': Timestamp.now(),
+          'lastSeen': FieldValue.serverTimestamp(),
         });
       }
       await _auth.signOut();
@@ -101,15 +95,14 @@ class AuthService {
   static Future<void> resetPassword(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
-    } on FirebaseAuthException catch (e) {
+    } on fb.FirebaseAuthException catch (e) {
       throw _handleAuthException(e);
     }
   }
 
   // Get current user
-  static User? get currentUser {
-    final firebaseUser = _auth.currentUser;
-    return firebaseUser != null ? _mapFirebaseUserToUser(firebaseUser) : null;
+  static fb.User? get currentUser {
+    return _auth.currentUser;
   }
 
   // Update user profile
@@ -132,7 +125,9 @@ class AuthService {
       if (teachSkills != null) updateData['teachSkills'] = teachSkills;
       if (learnSkills != null) updateData['learnSkills'] = learnSkills;
       if (languagesSpoken != null) updateData['languagesSpoken'] = languagesSpoken;
-      if (communicationPreferences != null) updateData['communicationPreferences'] = communicationPreferences;
+      if (communicationPreferences != null) {
+        updateData['communicationPreferences'] = communicationPreferences;
+      }
 
       await _firestore.collection('users').doc(uid).update(updateData);
     } catch (e) {
@@ -141,7 +136,7 @@ class AuthService {
   }
 
   // Helper method to handle auth exceptions
-  static String _handleAuthException(FirebaseAuthException e) {
+  static String _handleAuthException(fb.FirebaseAuthException e) {
     switch (e.code) {
       case 'user-not-found':
         return 'User not found';
@@ -158,17 +153,5 @@ class AuthService {
       default:
         return 'An error occurred: ${e.message}';
     }
-  }
-
-  // Helper to map Firebase user to our User model
-  static User _mapFirebaseUserToUser(User firebaseUser) {
-    return User(
-      uid: firebaseUser.uid,
-      displayName: firebaseUser.displayName ?? '',
-      email: firebaseUser.email ?? '',
-      photoUrl: firebaseUser.photoUrl,
-      createdAt: firebaseUser.metadata.creationTime ?? DateTime.now(),
-      lastSeen: DateTime.now(),
-    );
   }
 }

@@ -25,18 +25,29 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   void _handleResetPassword() async {
     if (_formKey.currentState!.validate()) {
       final authProvider = context.read<AuthProvider>();
-      final success = await authProvider.resetPassword(
-        _emailController.text.trim(),
-      );
 
-      if (success && mounted) {
-        setState(() {
-          _emailSent = true;
-        });
-      } else if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(authProvider.error ?? 'Failed to reset password')),
+      try {
+        await authProvider.resetPassword(
+          _emailController.text.trim(),
         );
+
+        if (mounted) {
+          if (authProvider.error == null) {
+            setState(() {
+              _emailSent = true;
+            });
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(authProvider.error ?? 'Failed to reset password')),
+            );
+          }
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error: ${e.toString()}')),
+          );
+        }
       }
     }
   }

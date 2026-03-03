@@ -199,6 +199,37 @@ class _LoginScreenState extends State<LoginScreen> {
 
               SizedBox(height: AppSpacing.xl),
 
+              // Google Sign-In Button
+              Consumer<AuthProvider>(
+                builder: (context, authProvider, _) {
+                  return OutlinedButton.icon(
+                    onPressed: authProvider.isLoading
+                        ? null
+                        : () async {
+                            final success =
+                                await authProvider.signInWithGoogle();
+                            if (success && mounted) {
+                              context.go('/home');
+                            } else if (mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(authProvider.error ??
+                                      'Google sign-in failed'),
+                                ),
+                              );
+                            }
+                          },
+                    icon: Icon(Icons.login),
+                    label: Text('Sign in with Google'),
+                    style: OutlinedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
+                    ),
+                  );
+                },
+              ),
+
+              SizedBox(height: AppSpacing.xl),
+
               // Divider
               Row(
                 children: [
